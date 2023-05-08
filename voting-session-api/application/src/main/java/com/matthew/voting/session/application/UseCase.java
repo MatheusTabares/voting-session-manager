@@ -2,9 +2,7 @@ package com.matthew.voting.session.application;
 
 import com.matthew.voting.session.domain.guideline.Guideline;
 
-public class UseCase {
+public abstract class UseCase <IN, OUT> {
 
-    public Guideline execute() {
-        return null;
-    }
+    public abstract OUT execute(IN anIn);
 }

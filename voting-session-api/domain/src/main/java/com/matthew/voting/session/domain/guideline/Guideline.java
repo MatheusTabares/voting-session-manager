@@ -1,11 +1,12 @@
 package com.matthew.voting.session.domain.guideline;
 
+import com.matthew.voting.session.domain.AggregateRoot;
+
 import java.time.Instant;
 import java.util.UUID;
 
-public class Guideline {
+public class Guideline extends AggregateRoot<GuidelineID> {
 
-    private String id;
     private String title;
     private String description;
     private Instant createdAt;
@@ -13,28 +14,28 @@ public class Guideline {
     private Instant deletedAt;
 
     private Guideline(
-            final String id,
-            final String title,
-            final String description,
-            final Instant createdAt,
-            final Instant updatedAt,
-            final Instant deletedAt) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+            final GuidelineID anId,
+            final String aTitle,
+            final String aDescription,
+            final Instant aCreatedAt,
+            final Instant aUpdatedAt,
+            final Instant aDeletedAt) {
+        super(anId);
+        this.title = aTitle;
+        this.description = aDescription;
+        this.createdAt = aCreatedAt;
+        this.updatedAt = aUpdatedAt;
+        this.deletedAt = aDeletedAt;
     }
 
     public static Guideline newGuideline(
             final String title, final String description) {
-        final var id = UUID.randomUUID().toString();
+        final var id = GuidelineID.unique();
         final var now = Instant.now();
         return new Guideline(id, title, description, now, now, null);
     }
 
-    public String getId() {
+    public GuidelineID getId() {
         return id;
     }
 

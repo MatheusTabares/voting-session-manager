@@ -1,4 +1,4 @@
-package com.matthew.voting.session.domain.guideline;
+package com.matthew.voting.session.domain;
 
 public class AggregateRoot<ID extends Identifier> extends Entity<ID> {
     protected AggregateRoot(final ID id) {

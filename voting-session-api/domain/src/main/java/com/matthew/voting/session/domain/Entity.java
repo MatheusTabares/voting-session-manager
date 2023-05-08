@@ -1,4 +1,4 @@
-package com.matthew.voting.session.domain.guideline;
+package com.matthew.voting.session.domain;
 
 import java.util.Objects;
 

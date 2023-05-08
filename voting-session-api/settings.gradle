@@ -1,0 +1,5 @@
+rootProject.name = 'voting-session-api'
+include 'application'
+include 'domain'
+include 'infrastructure'
+

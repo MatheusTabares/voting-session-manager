@@ -1,6 +1,7 @@
 package com.matthew.voting.session.domain.guideline;
 
 import com.matthew.voting.session.domain.AggregateRoot;
+import com.matthew.voting.session.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -33,6 +34,11 @@ public class Guideline extends AggregateRoot<GuidelineID> {
         final var id = GuidelineID.unique();
         final var now = Instant.now();
         return new Guideline(id, title, description, now, now, null);
+    }
+
+    @Override
+    public void validate(ValidationHandler handler) {
+        new GuidelineValidator(this, handler).validate();
     }
 
     public GuidelineID getId() {

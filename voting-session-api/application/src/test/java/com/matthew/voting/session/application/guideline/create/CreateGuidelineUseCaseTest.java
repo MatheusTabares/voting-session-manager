@@ -2,6 +2,7 @@ package com.matthew.voting.session.application.guideline.create;
 
 import com.matthew.voting.session.domain.guideline.GuidelineGateway;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -11,6 +12,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 public class CreateGuidelineUseCaseTest {
 
+    @Test
     public void givenAValidCommand_whenCallsCreateGuideline_shouldReturnGuidelineId() {
         final var expectedTitle = "Titulo da Pauta";
         final var expectedDescription = "Descrição da pauta.";
@@ -22,12 +24,12 @@ public class CreateGuidelineUseCaseTest {
         Mockito.when(guidelineGateway.create(Mockito.any()))
                 .thenAnswer(returnsFirstArg());
 
-        final var useCase = CreateGuidelineUseCase(guidelineGateway);
+        final var useCase = new DefaultCreateGuidelineUseCase(guidelineGateway);
 
         final var actualOutput = useCase.execute(aCommand);
 
         Assertions.assertNotNull(actualOutput);
-        Assertions.assertNotNull(actualOutput.getId());
+        Assertions.assertNotNull(actualOutput.id());
 
         Mockito.verify(guidelineGateway, Mockito.times(1))
                 .create(Mockito.argThat(aGuideline -> {

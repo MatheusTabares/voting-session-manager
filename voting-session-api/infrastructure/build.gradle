@@ -16,7 +16,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
+    implementation 'com.mysql:mysql-connector-j'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

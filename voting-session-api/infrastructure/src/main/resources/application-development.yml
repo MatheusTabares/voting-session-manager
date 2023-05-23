@@ -1,2 +1,5 @@
-server:
-  port: 8081
+mysql:
+  username: root
+  password: 123456
+  schema: voting_session
+  url: localhost:3306

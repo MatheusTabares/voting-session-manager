@@ -33,7 +33,23 @@ public class Guideline extends AggregateRoot<GuidelineID> {
             final String title, final String description) {
         final var id = GuidelineID.unique();
         final var now = Instant.now();
-        return new Guideline(id, title, description, now, now, null);
+        return with(id, title, description, now, now, null);
+    }
+
+    public static Guideline with(
+            final GuidelineID anId,
+            final String aTitle,
+            final String aDescription,
+            final Instant aCreatedAt,
+            final Instant anUpdatedAt,
+            final Instant aDeletedAt) {
+        return new Guideline(
+                anId,
+                aTitle,
+                aDescription,
+                aCreatedAt,
+                anUpdatedAt,
+                aDeletedAt);
     }
 
     @Override

@@ -3,3 +3,19 @@ spring:
     url: jdbc:mysql://${mysql.url}/${mysql.schema}?useSSL=true&serverTimezone=UTC&charset=UTF-8
     username: ${mysql.username}
     password: ${mysql.password}
+    hikari:
+      auto-commit: false # será gerenciado pelo Spring e Hibernate manualmente, performance
+      connection-timeout: 250 # milisegundos, troubleshooting
+      max-lifetime: 600000 # tempo máximo que uma conexão pode permanecer aberta, security
+      maximum-pool-size: 20 # maximo de conexoes abertas em paralelo com o banco. Ideal até 120k rpm, performance
+      minimum-idle: 10
+      pool-name: master
+    jpa:
+      open-in-view: false # desabilita abrir conexão desde o controller, performance
+      show-sql: true
+      hibernate:
+        ddl-auto: none # desabilita gerenciamento do banco no start da aplicação, isso ficará com o FLyway
+      properties:
+        "[hibernate.dialect]": org.hibernate.dialect.MySQL5InnoDBDialect
+        "[hibernate.generate_statistics]": false
+        "[hibernate.connection.provider_disables_autocommit]": true

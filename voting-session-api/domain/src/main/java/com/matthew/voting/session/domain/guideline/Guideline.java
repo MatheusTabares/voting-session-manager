@@ -4,6 +4,7 @@ import com.matthew.voting.session.domain.AggregateRoot;
 import com.matthew.voting.session.domain.validation.ValidationHandler;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Guideline extends AggregateRoot<GuidelineID> {
@@ -24,8 +25,8 @@ public class Guideline extends AggregateRoot<GuidelineID> {
         super(anId);
         this.title = aTitle;
         this.description = aDescription;
-        this.createdAt = aCreatedAt;
-        this.updatedAt = aUpdatedAt;
+        this.createdAt = Objects.requireNonNull(aCreatedAt, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(aCreatedAt, "'updatedAt' should not be null");;
         this.deletedAt = aDeletedAt;
     }
 

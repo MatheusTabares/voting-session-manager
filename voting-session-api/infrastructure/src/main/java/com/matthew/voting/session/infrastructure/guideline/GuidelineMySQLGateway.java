@@ -2,6 +2,7 @@ package com.matthew.voting.session.infrastructure.guideline;
 
 import com.matthew.voting.session.domain.guideline.Guideline;
 import com.matthew.voting.session.domain.guideline.GuidelineGateway;
+import com.matthew.voting.session.infrastructure.guideline.persistence.GuidelineJpaEntity;
 import com.matthew.voting.session.infrastructure.guideline.persistence.GuidelineRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class GuidelineMySQLGateway implements GuidelineGateway {
     }
 
     @Override
-    public Guideline create(Guideline aGuideline) {
-        return null;
+    public Guideline create(final Guideline aGuideline) {
+        return repository.save(GuidelineJpaEntity.from(aGuideline)).toAggregate();
     }
 }

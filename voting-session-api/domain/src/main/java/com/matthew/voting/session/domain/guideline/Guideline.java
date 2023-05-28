@@ -11,6 +11,8 @@ public class Guideline extends AggregateRoot<GuidelineID> {
 
     private String title;
     private String description;
+
+    private boolean openSession;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
@@ -19,14 +21,16 @@ public class Guideline extends AggregateRoot<GuidelineID> {
             final GuidelineID anId,
             final String aTitle,
             final String aDescription,
+            final boolean openSession,
             final Instant aCreatedAt,
             final Instant aUpdatedAt,
             final Instant aDeletedAt) {
         super(anId);
         this.title = aTitle;
         this.description = aDescription;
+        this.openSession = openSession;
         this.createdAt = Objects.requireNonNull(aCreatedAt, "'createdAt' should not be null");
-        this.updatedAt = Objects.requireNonNull(aCreatedAt, "'updatedAt' should not be null");;
+        this.updatedAt = Objects.requireNonNull(aUpdatedAt, "'updatedAt' should not be null");;
         this.deletedAt = aDeletedAt;
     }
 
@@ -34,13 +38,23 @@ public class Guideline extends AggregateRoot<GuidelineID> {
             final String title, final String description) {
         final var id = GuidelineID.unique();
         final var now = Instant.now();
-        return with(id, title, description, now, now, null);
+        return with(id, title, description, false, now, now, null);
+    }
+
+    public static Guideline openSession(final Guideline aGuideline) {
+        final var anId = aGuideline.id;
+        final var aTitle = aGuideline.title;
+        final var aDescription = aGuideline.description;
+        final var aCreatedAt = aGuideline.createdAt;
+        final var anUpdatedAt = Instant.now();
+        return with(anId, aTitle, aDescription, true, aCreatedAt, anUpdatedAt, null);
     }
 
     public static Guideline with(
             final GuidelineID anId,
             final String aTitle,
             final String aDescription,
+            final boolean openSession,
             final Instant aCreatedAt,
             final Instant anUpdatedAt,
             final Instant aDeletedAt) {
@@ -48,6 +62,7 @@ public class Guideline extends AggregateRoot<GuidelineID> {
                 anId,
                 aTitle,
                 aDescription,
+                openSession,
                 aCreatedAt,
                 anUpdatedAt,
                 aDeletedAt);
@@ -69,6 +84,8 @@ public class Guideline extends AggregateRoot<GuidelineID> {
     public String getDescription() {
         return description;
     }
+
+    public boolean isOpenSession() { return openSession; }
 
     public Instant getCreatedAt() {
         return createdAt;

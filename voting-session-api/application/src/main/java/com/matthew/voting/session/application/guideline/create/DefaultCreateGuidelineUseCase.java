@@ -30,7 +30,7 @@ public class DefaultCreateGuidelineUseCase extends CreateGuidelineUseCase{
     }
 
     private Either<Notification, CreateGuidelineOutput> create(final Guideline aGuideline) {
-        return API.Try(() -> this.guidelineGateway.create(aGuideline))
+        return API.Try(() -> this.guidelineGateway.save(aGuideline))
                 .toEither()
                 .bimap(Notification::create, CreateGuidelineOutput::from);
     }

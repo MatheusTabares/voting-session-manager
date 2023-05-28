@@ -6,6 +6,8 @@ import com.matthew.voting.session.infrastructure.guideline.persistence.Guideline
 import com.matthew.voting.session.infrastructure.guideline.persistence.GuidelineRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class GuidelineMySQLGateway implements GuidelineGateway {
 
@@ -16,7 +18,13 @@ public class GuidelineMySQLGateway implements GuidelineGateway {
     }
 
     @Override
-    public Guideline create(final Guideline aGuideline) {
+    public Guideline save(final Guideline aGuideline) {
         return repository.save(GuidelineJpaEntity.from(aGuideline)).toAggregate();
+    }
+
+    @Override
+    public Optional<Guideline> findById(String guidelineId) {
+        final var guidelineOpt = repository.findById(guidelineId);
+        return guidelineOpt.isPresent() ? Optional.of(guidelineOpt.get().toAggregate()) : Optional.empty();
     }
 }

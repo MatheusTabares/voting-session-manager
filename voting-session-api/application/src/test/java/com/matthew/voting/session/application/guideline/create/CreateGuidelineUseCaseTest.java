@@ -29,7 +29,7 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with(expectedTitle, expectedDescription);
 
-        Mockito.when(gateway.create(Mockito.any()))
+        Mockito.when(gateway.save(Mockito.any()))
                 .thenAnswer(returnsFirstArg());
 
         final var actualOutput = useCase.execute(aCommand).get();
@@ -38,7 +38,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertNotNull(actualOutput.id());
 
         Mockito.verify(gateway, Mockito.times(1))
-                .create(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())
+                .save(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())
                             && Objects.equals(expectedTitle, aGuideline.getTitle())
                             && Objects.equals(expectedDescription, aGuideline.getDescription())
                             && Objects.nonNull(aGuideline.getCreatedAt())
@@ -53,7 +53,7 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with(expectedTitle, expectedDescription);
 
-        Mockito.when(gateway.create(Mockito.any()))
+        Mockito.when(gateway.save(Mockito.any()))
                 .thenAnswer(returnsFirstArg());
 
         final var actualOutput = useCase.execute(aCommand).get();
@@ -62,7 +62,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertNotNull(actualOutput.id());
 
         Mockito.verify(gateway, Mockito.times(1))
-                .create(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())
+                .save(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())
                         && Objects.equals(expectedTitle, aGuideline.getTitle())
                         && Objects.equals(expectedDescription, aGuideline.getDescription())
                         && Objects.nonNull(aGuideline.getCreatedAt())
@@ -83,7 +83,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
-        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
+        Mockito.verify(gateway, Mockito.times(0)).save(Mockito.any());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
-        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
+        Mockito.verify(gateway, Mockito.times(0)).save(Mockito.any());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
-        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
+        Mockito.verify(gateway, Mockito.times(0)).save(Mockito.any());
     }
 
     @Test
@@ -139,7 +139,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
-        Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
+        Mockito.verify(gateway, Mockito.times(0)).save(Mockito.any());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with(expectedTitle, expectedDescription);
 
-        Mockito.when(gateway.create(Mockito.any()))
+        Mockito.when(gateway.save(Mockito.any()))
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
 
         final var notification = useCase.execute(aCommand).getLeft();
@@ -160,7 +160,7 @@ public class CreateGuidelineUseCaseTest {
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(gateway, Mockito.times(1))
-                .create(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())
+                .save(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())
                         && Objects.equals(expectedTitle, aGuideline.getTitle())
                         && Objects.equals(expectedDescription, aGuideline.getDescription())
                         && Objects.nonNull(aGuideline.getCreatedAt())

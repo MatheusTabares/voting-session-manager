@@ -25,7 +25,7 @@ public class GuidelineMySQLGatewayTest {
 
         Assertions.assertEquals(0, guidelineRepository.count());
 
-        final var actualCategory = guidelineGateway.create(aGuideline);
+        final var actualCategory = guidelineGateway.save(aGuideline);
 
         Assertions.assertEquals(1, guidelineRepository.count());
 

@@ -23,6 +23,9 @@ public class GuidelineJpaEntity {
     @Column(name = "description", length = 4000, nullable = false)
     private String description;
 
+    @Column(name = "is_open")
+    private boolean openSession;
+
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
@@ -37,6 +40,7 @@ public class GuidelineJpaEntity {
                 aGuideline.getId().getValue(),
                 aGuideline.getTitle(),
                 aGuideline.getDescription(),
+                aGuideline.isOpenSession(),
                 aGuideline.getCreatedAt(),
                 aGuideline.getUpdatedAt(),
                 aGuideline.getDeletedAt()
@@ -48,6 +52,7 @@ public class GuidelineJpaEntity {
                 GuidelineID.from(getId()),
                 getTitle(),
                 getDescription(),
+                isOpenSession(),
                 getCreatedAt(),
                 getUpdatedAt(),
                 getDeletedAt()
@@ -60,12 +65,14 @@ public class GuidelineJpaEntity {
             final String id,
             final String title,
             final String description,
+            final boolean openSession,
             final Instant createdAt,
             final Instant updatedAt,
             final Instant deletedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.openSession = openSession;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -93,6 +100,14 @@ public class GuidelineJpaEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isOpenSession() {
+        return openSession;
+    }
+
+    public void setOpenSession(boolean openSession) {
+        this.openSession = openSession;
     }
 
     public Instant getCreatedAt() {

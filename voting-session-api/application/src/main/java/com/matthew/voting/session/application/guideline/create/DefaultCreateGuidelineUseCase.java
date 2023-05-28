@@ -2,7 +2,9 @@ package com.matthew.voting.session.application.guideline.create;
 
 import com.matthew.voting.session.domain.guideline.Guideline;
 import com.matthew.voting.session.domain.guideline.GuidelineGateway;
-import com.matthew.voting.session.domain.validation.handler.ThrowsValidationHandler;
+import com.matthew.voting.session.domain.validation.handler.Notification;
+import io.vavr.API;
+import io.vavr.control.Either;
 
 import java.util.Objects;
 
@@ -15,13 +17,21 @@ public class DefaultCreateGuidelineUseCase extends CreateGuidelineUseCase{
     }
 
     @Override
-    public CreateGuidelineOutput execute(final CreateGuidelineCommand aCommand) {
+    public Either<Notification, CreateGuidelineOutput> execute(final CreateGuidelineCommand aCommand) {
         final var aTitle = aCommand.title();
         final var aDescription = aCommand.description();
 
-        final var aGuideline = Guideline.newGuideline(aTitle, aDescription);
-        aGuideline.validate(new ThrowsValidationHandler());
+        final var notification = Notification.create();
 
-        return CreateGuidelineOutput.from(this.guidelineGateway.create(aGuideline));
+        final var aGuideline = Guideline.newGuideline(aTitle, aDescription);
+        aGuideline.validate(notification);
+
+        return notification.hasError() ? API.Left(notification) : create(aGuideline);
+    }
+
+    private Either<Notification, CreateGuidelineOutput> create(final Guideline aGuideline) {
+        return API.Try(() -> this.guidelineGateway.create(aGuideline))
+                .toEither()
+                .bimap(Notification::create, CreateGuidelineOutput::from);
     }
 }

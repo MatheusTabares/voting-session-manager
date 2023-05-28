@@ -1,6 +1,5 @@
 package com.matthew.voting.session.application.guideline.create;
 
-import com.matthew.voting.session.domain.exceptions.DomainException;
 import com.matthew.voting.session.domain.guideline.GuidelineGateway;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ public class CreateGuidelineUseCaseTest {
         Mockito.when(gateway.create(Mockito.any()))
                 .thenAnswer(returnsFirstArg());
 
-        final var actualOutput = useCase.execute(aCommand);
+        final var actualOutput = useCase.execute(aCommand).get();
 
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
@@ -57,7 +56,7 @@ public class CreateGuidelineUseCaseTest {
         Mockito.when(gateway.create(Mockito.any()))
                 .thenAnswer(returnsFirstArg());
 
-        final var actualOutput = useCase.execute(aCommand);
+        final var actualOutput = useCase.execute(aCommand).get();
 
         Assertions.assertNotNull(actualOutput);
         Assertions.assertNotNull(actualOutput.id());
@@ -79,9 +78,10 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with(null, expectedDescription);
 
-        final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+        final var notification = useCase.execute(aCommand).getLeft();
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
     }
@@ -94,9 +94,10 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with("   ", expectedDescription);
 
-        final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+        final var notification = useCase.execute(aCommand).getLeft();
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
     }
@@ -112,9 +113,10 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with(expectedTitle, expectedDescription);
 
-        final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+        final var notification = useCase.execute(aCommand).getLeft();
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
     }
@@ -132,9 +134,10 @@ public class CreateGuidelineUseCaseTest {
 
         final var aCommand = CreateGuidelineCommand.with(expectedTitle, expectedDescription);
 
-        final var actualException = Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+        final var notification = useCase.execute(aCommand).getLeft();
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(gateway, Mockito.times(0)).create(Mockito.any());
     }
@@ -144,15 +147,17 @@ public class CreateGuidelineUseCaseTest {
         final var expectedTitle = "Titulo da Pauta";
         final var expectedDescription = "Descrição da pauta.";
         final var expectedErrorMessage = "Gateway Error";
+        final var expectedErrorCount = 1;
 
         final var aCommand = CreateGuidelineCommand.with(expectedTitle, expectedDescription);
 
         Mockito.when(gateway.create(Mockito.any()))
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
 
-        final var actualException = Assertions.assertThrows(IllegalStateException.class, () -> useCase.execute(aCommand));
+        final var notification = useCase.execute(aCommand).getLeft();
 
-        Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+        Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
 
         Mockito.verify(gateway, Mockito.times(1))
                 .create(Mockito.argThat(aGuideline -> Objects.nonNull(aGuideline.getId())

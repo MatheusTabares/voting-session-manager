@@ -39,6 +39,7 @@ public class GuidelineValidator extends Validator {
 
     private void checkDescriptionConstraints() {
         final var description = this.guideline.getDescription();
+
         if(description != null && description.length() > MAX_LENGTH_DESCRIPTION) {
             this.validationHandler().append(new Error("'description' must not exceed 255 characters"));
         }

@@ -6,9 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.cglib.core.Local;
 
+import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Locale;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "guideline")
@@ -23,8 +26,11 @@ public class GuidelineJpaEntity {
     @Column(name = "description", length = 4000, nullable = false)
     private String description;
 
-    @Column(name = "is_open")
-    private boolean openSession;
+    @Column(name = "start_session")
+    private Instant startSession;
+
+    @Column(name = "end_session")
+    private Instant endSession;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
@@ -40,7 +46,8 @@ public class GuidelineJpaEntity {
                 aGuideline.getId().getValue(),
                 aGuideline.getTitle(),
                 aGuideline.getDescription(),
-                aGuideline.isOpenSession(),
+                aGuideline.getStartSession(),
+                aGuideline.getEndSession(),
                 aGuideline.getCreatedAt(),
                 aGuideline.getUpdatedAt(),
                 aGuideline.getDeletedAt()
@@ -52,7 +59,8 @@ public class GuidelineJpaEntity {
                 GuidelineID.from(getId()),
                 getTitle(),
                 getDescription(),
-                isOpenSession(),
+                getStartSession(),
+                getEndSession(),
                 getCreatedAt(),
                 getUpdatedAt(),
                 getDeletedAt()
@@ -65,14 +73,16 @@ public class GuidelineJpaEntity {
             final String id,
             final String title,
             final String description,
-            final boolean openSession,
+            final Instant startSession,
+            final Instant endSession,
             final Instant createdAt,
             final Instant updatedAt,
             final Instant deletedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.openSession = openSession;
+        this.startSession = startSession;
+        this.endSession = endSession;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -102,12 +112,20 @@ public class GuidelineJpaEntity {
         this.description = description;
     }
 
-    public boolean isOpenSession() {
-        return openSession;
+    public Instant getStartSession() {
+        return startSession;
     }
 
-    public void setOpenSession(boolean openSession) {
-        this.openSession = openSession;
+    public void setStartSession(Instant startSession) {
+        this.startSession = startSession;
+    }
+
+    public Instant getEndSession() {
+        return endSession;
+    }
+
+    public void setEndSession(Instant endSession) {
+        this.endSession = endSession;
     }
 
     public Instant getCreatedAt() {

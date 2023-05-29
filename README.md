@@ -8,9 +8,9 @@ In cooperativism, each associate has one vote and decisions are taken in assembl
 Spring Boot, Gradle, Java 17, Docker, MySQL, Clean Architecture, Screaming Architecture, Nottification Pattern, Command Pattern, Statical Pattern, TDD, DDD, Junit, Mockito, JPA, Hibernate, Flyway, H2, Swagger.
 
 ## Run
-Run the application's docker compose: **docker-compose up -d**
-Run the migration script: **./gradlew flywayMigrate**
-Run application at: **http://localhost:8080**
+- Run the application's docker compose: **docker-compose up -d**
+- Run the migration script: **./gradlew flywayMigrate**
+- Run application at: **http://localhost:8080**
 
 
 ## Links

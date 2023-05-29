@@ -4,6 +4,8 @@ import com.matthew.voting.session.application.guideline.create.CreateGuidelineUs
 import com.matthew.voting.session.application.guideline.create.DefaultCreateGuidelineUseCase;
 import com.matthew.voting.session.application.guideline.openSession.DefaultOpenSessionGuidelineUseCase;
 import com.matthew.voting.session.application.guideline.openSession.OpenSessionGuidelineUseCase;
+import com.matthew.voting.session.application.guideline.vote.DefaultVoteGuidelineUseCase;
+import com.matthew.voting.session.application.guideline.vote.VoteGuidelineUseCase;
 import com.matthew.voting.session.domain.guideline.GuidelineGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,5 +27,10 @@ public class GuidelineUseCaseConfig {
     @Bean
     public OpenSessionGuidelineUseCase openSessionGuidelineUseCase(final GuidelineGateway gateway) {
         return new DefaultOpenSessionGuidelineUseCase(gateway);
+    }
+
+    @Bean
+    public VoteGuidelineUseCase voteGuidelineUseCase(final GuidelineGateway gateway) {
+        return new DefaultVoteGuidelineUseCase(gateway);
     }
 }

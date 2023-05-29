@@ -2,16 +2,13 @@ package com.matthew.voting.session.infrastructure.guideline.persistence;
 
 import com.matthew.voting.session.domain.guideline.Guideline;
 import com.matthew.voting.session.domain.guideline.GuidelineID;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import org.springframework.cglib.core.Local;
+import com.matthew.voting.session.domain.voting.session.VotingSession;
+import com.matthew.voting.session.domain.voting.session.VotingSessionID;
+import jakarta.persistence.*;
 
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "guideline")
@@ -41,6 +38,12 @@ public class GuidelineJpaEntity {
     @Column(name = "deleted_at", columnDefinition = "DATETIME(6)")
     private Instant deletedAt;
 
+    @OneToMany(mappedBy="guideline", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<VotingSessionJpaEntity> votes = Set.of();
+
+    public static GuidelineJpaEntity newGuidelineJpaEntity(final String guidelineId) {
+        return new GuidelineJpaEntity(guidelineId);
+    }
     public static GuidelineJpaEntity from (final Guideline aGuideline) {
         return new GuidelineJpaEntity(
                 aGuideline.getId().getValue(),
@@ -48,6 +51,7 @@ public class GuidelineJpaEntity {
                 aGuideline.getDescription(),
                 aGuideline.getStartSession(),
                 aGuideline.getEndSession(),
+                aGuideline.getVotes(),
                 aGuideline.getCreatedAt(),
                 aGuideline.getUpdatedAt(),
                 aGuideline.getDeletedAt()
@@ -61,10 +65,20 @@ public class GuidelineJpaEntity {
                 getDescription(),
                 getStartSession(),
                 getEndSession(),
+                toAggregateVotes(),
                 getCreatedAt(),
                 getUpdatedAt(),
                 getDeletedAt()
         );
+    }
+
+    private Set<VotingSession> toAggregateVotes() {
+        return getVotes().stream().map(vote -> VotingSession.with(
+                VotingSessionID.from(vote.getId()),
+                        getId(),
+                        vote.getCpf(),
+                        vote.isUpvote()))
+                .collect(Collectors.toSet());
     }
 
     private GuidelineJpaEntity() {}
@@ -75,6 +89,7 @@ public class GuidelineJpaEntity {
             final String description,
             final Instant startSession,
             final Instant endSession,
+            final Set<VotingSession> votes,
             final Instant createdAt,
             final Instant updatedAt,
             final Instant deletedAt) {
@@ -83,9 +98,14 @@ public class GuidelineJpaEntity {
         this.description = description;
         this.startSession = startSession;
         this.endSession = endSession;
+        this.votes = votes.stream().map(VotingSessionJpaEntity::newVotingSession).collect(Collectors.toSet());
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+    }
+
+    private GuidelineJpaEntity(final String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -150,5 +170,13 @@ public class GuidelineJpaEntity {
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public Set<VotingSessionJpaEntity> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<VotingSessionJpaEntity> votes) {
+        this.votes = votes;
     }
 }

@@ -4,6 +4,7 @@ import com.matthew.voting.session.domain.guideline.Guideline;
 import com.matthew.voting.session.domain.guideline.GuidelineGateway;
 import com.matthew.voting.session.infrastructure.guideline.persistence.GuidelineJpaEntity;
 import com.matthew.voting.session.infrastructure.guideline.persistence.GuidelineRepository;
+import com.matthew.voting.session.infrastructure.guideline.persistence.VotingSessionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,8 +14,13 @@ public class GuidelineMySQLGateway implements GuidelineGateway {
 
     private final GuidelineRepository repository;
 
-    public GuidelineMySQLGateway(final GuidelineRepository repository) {
+    private final VotingSessionRepository votingSessionRepository;
+
+    public GuidelineMySQLGateway(
+            final GuidelineRepository repository,
+            final VotingSessionRepository votingSessionRepository) {
         this.repository = repository;
+        this.votingSessionRepository = votingSessionRepository;
     }
 
     @Override
